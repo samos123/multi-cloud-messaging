@@ -7,8 +7,13 @@ from google.cloud import pubsub_v1
 def lambda_handler(event, context):
     project_id = os.environ['PROJECT_ID']
     topic_name = os.environ['TOPIC_NAME']
+    origin = event['Records'][0]['Sns'].get("MessageAttributes", {})\
+                                .get("origin", {}).get("Value", "")
+    if origin == "pubsub":
+        return ("Origin is pub/sub. Exit.")
+
     message = event['Records'][0]['Sns']['Message']
-    print("From SNS: " + message)
+    print("From SNS to pub/sub: " + message)
     publish_message(project_id, topic_name, message)
     return message
 
