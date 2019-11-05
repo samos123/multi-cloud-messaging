@@ -41,3 +41,11 @@ Run the script to package the lambda function and dependencies:
 ```
 ./package-lambda.sh
 ```
+
+## Deploy to Google Cloud Functions
+
+```
+gcloud functions deploy pub-sub-to-sns --region us-east1 \
+    --entry-point handler --runtime python37 --source pub-sub-to-sns \
+    --env-vars-file aws-secrets.yaml --trigger-topic multi-cloud-messaging
+```

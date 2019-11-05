@@ -2,4 +2,4 @@ package
 .venv
 gcp-key.json
 *.zip
-pub-sub-to-sns/aws-secrets
+pub-sub-to-sns/aws-secrets.yaml
