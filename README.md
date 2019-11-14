@@ -63,6 +63,6 @@ gcloud functions deploy pub-sub-to-sns --region us-east1 \
 ## Deploying the front-end to Cloud Run
 
 ```
-gcloud builds submit --tag gcr.io/gsam-123/messaging
-gcloud beta run deploy --image gcr.io/gsam-123/messaging --platform managed --max-instances 1 --set-env-vars="PUBSUB_VERIFICATION_TOKEN=changeme"
+gcloud builds submit --tag gcr.io/$PROJECT_ID/messaging
+gcloud beta run deploy --image gcr.io/$PROJECT_ID/messaging --platform managed --max-instances 1 --set-env-vars="TOKEN=changeme"
 ```

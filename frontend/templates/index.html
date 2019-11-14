@@ -21,7 +21,14 @@
       </ul>
     </div>
     <div class="col border bg-light">
-        <h3>SNS</h3>
+      <h3>SNS</h3>
+      <p>SNS messages received:</p>
+      <ul>
+        {% for message in sns_messages: %}
+          <li>{{message}}</li>
+        {% endfor %}
+      </ul>
+
     </div>
   </div>
 </div>
