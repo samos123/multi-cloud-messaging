@@ -60,3 +60,9 @@ gcloud functions deploy pub-sub-to-sns --region us-east1 \
     --entry-point handler --runtime python37 --source pub-sub-to-sns \
     --env-vars-file aws-secrets.yaml --trigger-topic multi-cloud-messaging
 ```
+## Deploying the front-end to Cloud Run
+
+```
+gcloud builds submit --tag gcr.io/gsam-123/messaging
+gcloud beta run deploy --image gcr.io/gsam-123/messaging --platform managed --max-instances 1 --set-env-vars="PUBSUB_VERIFICATION_TOKEN=changeme"
+```
