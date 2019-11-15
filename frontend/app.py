@@ -3,7 +3,7 @@ import json
 import logging
 import os
 
-from flask import current_app, Flask, render_template, request, redirect
+from flask import current_app, Flask, render_template, request, redirect, jsonify
 from google.cloud import pubsub_v1
 import requests
 
@@ -37,8 +37,23 @@ def clear():
 
 def extract_image(message):
     mj = json.loads(message)
-    img = mj['mediaLink']
+    if 'Records' in mj: # means this is an AWS event
+        key = mj["Records"][0]["s3"]["object"]["key"]
+        bucket = mj["Records"][0]["s3"]["bucket"]["name"]
+        img = "https://%s.s3.us-east-2.amazonaws.com/%s" % (bucket, key)
+    if 'mediaLink' in mj: # GCS event
+        img = mj['mediaLink']
     return img
+
+
+@app.route('/pubsub/messages', methods=['GET'])
+def pubsub_messages():
+    return jsonify(PUBSUB_MESSAGES)
+
+
+@app.route('/sns/messages', methods=['GET'])
+def sns_messages():
+    return jsonify(SNS_MESSAGES)
 
 
 @app.route('/pubsub/push', methods=['POST'])
