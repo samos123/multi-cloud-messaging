@@ -3,7 +3,7 @@ import json
 import logging
 import os
 
-from flask import current_app, Flask, render_template, request
+from flask import current_app, Flask, render_template, request, redirect
 from google.cloud import pubsub_v1
 import requests
 
@@ -29,6 +29,18 @@ def index():
     return 'OK', 200
 
 
+@app.route('/clear', methods=['GET', 'POST'])
+def clear():
+    PUBSUB_MESSAGES.clear()
+    SNS_MESSAGES.clear()
+    return redirect("/", code=302)
+
+def extract_image(message):
+    mj = json.loads(message)
+    img = mj['mediaLink']
+    return img
+
+
 @app.route('/pubsub/push', methods=['POST'])
 def pubsub_push():
     if (request.args.get('token', '') !=
@@ -39,7 +51,7 @@ def pubsub_push():
     payload = base64.b64decode(envelope['message']['data'])
 
     print("Got Pub/Sub message: ", payload)
-    PUBSUB_MESSAGES.append(payload)
+    PUBSUB_MESSAGES.append(extract_image(payload))
 
     return 'OK', 200
 
@@ -63,7 +75,7 @@ def sns():
 
     if hdr == 'Notification':
         print("Appending SNS message", js["Message"])
-        SNS_MESSAGES.append(js['Message'])
+        SNS_MESSAGES.append(extract_image(js['Message']))
 
     return 'OK\n'
 

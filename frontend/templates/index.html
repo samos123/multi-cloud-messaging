@@ -9,27 +9,30 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<div class="container-fluid">
+<div class="container">
   <div class="row">
-    <div class="col border bg-light">
+    <div class="col border bg-primary text-white">
       <h3>Pub/Sub</h3>
       <p>Pub/Sub messages received:</p>
       <ul>
         {% for message in pubsub_messages: %}
-          <li>{{message}}</li>
+        <img src="{{message}}" class="img-fluid">
         {% endfor %}
       </ul>
     </div>
-    <div class="col border bg-light">
+    <div class="col border bg-warning text-white">
       <h3>SNS</h3>
       <p>SNS messages received:</p>
       <ul>
         {% for message in sns_messages: %}
-          <li>{{message}}</li>
+        <img src="{{message}}" class="img-fluid">
         {% endfor %}
       </ul>
 
     </div>
+  </div>
+  <div class="row">
+    <a class="btn btn-primary" href="/clear" role="button">Clear</a>
   </div>
 </div>
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
